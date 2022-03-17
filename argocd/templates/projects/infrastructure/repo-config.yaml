@@ -1,0 +1,14 @@
+{{ $project := .Values.projects.infrastructure }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: argocd-repo-{{ $project.name }}
+  labels:
+    argocd.argoproj.io/secret-type: repository
+    app.kubernetes.io/part-of: argocd
+data:
+  url: {{ $project.repoUrl | b64enc }}
+  name: {{ printf $project.name | b64enc }}
+  type: {{ printf "git" | b64enc }}
+  password: {{ printf .Values.projects.gitToken.password | b64enc }}
+  username: {{ printf .Values.projects.gitToken.name | b64enc }}

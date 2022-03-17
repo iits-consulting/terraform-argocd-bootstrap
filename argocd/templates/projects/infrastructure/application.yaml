@@ -1,0 +1,25 @@
+{{ $project := .Values.projects.infrastructure }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ $project.name }}
+spec:
+  project: {{ $project.name }}
+  revisionHistoryLimit: 3
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: true
+    syncOptions:
+      - CreateNamespace=true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ .Release.Namespace }}
+  source:
+    path: {{ tpl $project.path . }}
+    repoURL: {{ $project.repoUrl }}
+    targetRevision: {{ $project.branch }}
+    helm:
+      valueFiles:
+        - values.yaml

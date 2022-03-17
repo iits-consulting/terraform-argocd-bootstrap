@@ -1,0 +1,28 @@
+{{ $project := .Values.projects.infrastructure }}
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: {{ $project.name }}
+spec:
+  sourceRepos:
+    - {{ $project.repoUrl }}
+  destinations:
+    - namespace: '*'
+      server: 'https://kubernetes.default.svc'
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  {{ if eq .Values.projects.stage "prod" -}}
+  syncWindows:
+    - kind: allow
+      # it is 18:00 but you need to write it in UTC
+      schedule: '0 17 * * *'
+      duration: 30m
+      manualSync: true
+      applications:
+        - '*'
+      namespaces:
+        - '*'
+      clusters:
+        - '*'
+  {{- end -}}
