@@ -21,7 +21,10 @@ variable "registry_creds" {
     version                          = optional(string) // Helm Chart Version (default 1.0.6)
     dockerconfig_json_base64_encoded = string           // Dockerconfig to inject pull secret into every kubernetes deployment. See also https://github.com/iits-consulting/registry-creds-chart
   })
-  #TODO add base64 validation
+  validation {
+    condition     = can(base64decode(var.registry_creds.dockerconfig_json_base64_encoded))
+    error_message = "The variable dockerconfig_json_base64_encoded is not base64 encoded."
+  }
 }
 
 locals {
@@ -35,7 +38,7 @@ variable "argocd" {
   description = "ArgoCD configuration parameters"
   sensitive   = true
   type = object({
-    enabled                   = optional(bool)   // Enabled deployment
+    enabled                   = bool             // Enabled deployment
     stage                     = string           // Is needed for the Sync Window to auto apply changes on production only after 18:00
     project_name              = optional(string) // The ArgoCD project name shown in the UI (default: infrastructure-charts)
     git_access_token_username = string           // The Username of the Git User/Service account/Token to be able to pull the git Code
