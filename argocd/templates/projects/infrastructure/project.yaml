@@ -3,6 +3,9 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: {{ $project.name }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-5"
 spec:
   sourceRepos:
     - {{ $project.repoUrl }}
