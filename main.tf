@@ -1,5 +1,5 @@
 resource "helm_release" "crds" {
-  count = var.crds.enabled ? 1 : 0
+  count                 = var.crds.enabled ? 1 : 0
   name                  = "crds"
   repository            = "https://iits-consulting.github.io/crds-chart"
   chart                 = "crds"
@@ -11,7 +11,7 @@ resource "helm_release" "crds" {
 }
 
 resource "helm_release" "registry_creds" {
-  count = var.registry_creds.enabled ? 1 : 0
+  count                 = var.registry_creds.enabled ? 1 : 0
   depends_on            = [helm_release.crds]
   name                  = "registry-creds"
   repository            = "https://iits-consulting.github.io/registry-creds-chart"
@@ -29,7 +29,7 @@ resource "helm_release" "registry_creds" {
 }
 
 resource "helm_release" "argocd" {
-  count = var.argocd.enabled ? 1 : 0
+  count                 = var.argocd.enabled ? 1 : 0
   depends_on            = [helm_release.registry_creds]
   name                  = "argocd"
   chart                 = "${path.module}/argocd"

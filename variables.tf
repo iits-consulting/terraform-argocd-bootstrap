@@ -52,7 +52,7 @@ variable "argocd" {
 
 locals {
   argocd = defaults(var.argocd, {
-    enabled = true
+    enabled             = true
     project_name        = "infrastructure-charts"
     project_source_path = "stages/${var.argocd.stage}/infrastructure-charts"
   })
