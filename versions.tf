@@ -6,6 +6,9 @@ terraform {
     kubernetes = {
       source = "hashicorp/kubernetes"
     }
+    errorcheck = {
+      source = "rhythmictech/errorcheck"
+    }
   }
   experiments = [
     module_variable_optional_attrs,

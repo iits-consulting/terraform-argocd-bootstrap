@@ -1,5 +1,4 @@
 projects:
-  stage: ${STAGE}
   infrastructure:
     name: ${PROJECT_NAME}
     repoUrl: ${PROJECT_SOURCE_REPO_URL}
