@@ -29,7 +29,6 @@ resource "helm_release" "registry_credentials" {
 }
 
 resource "helm_release" "argocd" {
-  count                 = var.argocd_enabled ? 1 : 0
   depends_on            = [helm_release.registry_credentials]
   name                  = "argocd"
   chart                 = "${path.module}/argocd"

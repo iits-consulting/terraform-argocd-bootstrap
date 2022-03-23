@@ -51,13 +51,6 @@ resource "errorcheck_is_valid" "registry_credentials_dockerconfig_validation" {
   }
 }
 
-### ArgoCD Configuration:
-variable "argocd_enabled" {
-  description = "Enable or disable the ArgoCD chart. (default: true)"
-  type        = bool
-  default     = true
-}
-
 variable "argocd_namespace" {
   description = "Kubernetes namespace to install ArgoCD chart to. (default: argocd)"
   type        = string
@@ -73,21 +66,22 @@ variable "argocd_project_name" {
 variable "argocd_git_access_token_username" {
   description = "The Username of the Git User/Service account to be able to pull the git Code."
   type        = string
-  default     = ""
   sensitive   = true
 }
 
 variable "argocd_git_access_token" {
   description = "Secret Access Token to be able to pull the git Code."
   type        = string
-  default     = ""
   sensitive   = true
 }
 
 variable "argocd_project_source_repo_url" {
   description = "Git repository URL where the App of Apps Helm Chart resides."
   type        = string
-  default     = ""
+  validation {
+    condition = substr(var.argocd_project_source_repo_url, 0, 8) == "https://"
+    error_message = "Only https is supported for argocd_project_source_repo_url!"
+  }
 }
 
 variable "argocd_project_source_repo_branch" {
@@ -99,30 +93,5 @@ variable "argocd_project_source_repo_branch" {
 variable "argocd_project_source_path" {
   description = "Path within the Git repository where the App of Apps Helm Chart resides."
   type        = string
-  default     = ""
 }
 
-resource "errorcheck_is_valid" "argocd_validation" {
-  for_each = {
-    argocd_namespace                  = var.argocd_namespace
-    argocd_project_name               = var.argocd_project_name
-    argocd_git_access_token_username  = var.argocd_git_access_token_username
-    argocd_git_access_token           = var.argocd_git_access_token
-    argocd_project_source_repo_url    = var.argocd_project_source_repo_url
-    argocd_project_source_repo_branch = var.argocd_project_source_repo_branch
-    argocd_project_source_path        = var.argocd_project_source_path
-  }
-  name = "ArgoCD ${title(join(" ", split("_", replace(each.key, "argocd_", ""))))} Validation"
-  test = {
-    assert        = length(each.value) != 0 || !var.argocd_enabled
-    error_message = "The variable ${each.key} can not be empty if ArgoCD is enabled!"
-  }
-}
-
-resource "errorcheck_is_valid" "argocd_project_source_repo_url_validation" {
-  name = "ArgoCD Project Source Repo URL Validation"
-  test = {
-    assert        = length(var.argocd_project_source_repo_url) == 0 || substr(var.argocd_project_source_repo_url, 0, 8) == "https://" || !var.argocd_enabled
-    error_message = "Only https is supported for argocd_project_source_repo_url!"
-  }
-}
