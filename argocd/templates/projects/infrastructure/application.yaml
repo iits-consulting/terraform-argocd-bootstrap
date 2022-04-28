@@ -24,5 +24,13 @@ spec:
     repoURL: {{ $project.repoUrl }}
     targetRevision: {{ $project.branch }}
     helm:
+      values: |
+        global:
+          projectName: {{.Values.projects.infrastructure.name}}
+          source:
+            appsBasePath: {{.Values.projects.infrastructure.path}}
+            repoURL: {{.Values.projects.infrastructure.repoUrl}}
+            targetRevision: {{.Values.projects.infrastructure.branch}}
+        {{- tpl .Values.applicationValues . | nindent 12}}
       valueFiles:
         - values.yaml

@@ -1,3 +1,6 @@
+# Custom Values which are handed over to the application
+applicationValues: |-
+${APPLICATION_VALUES}
 projects:
   infrastructure:
     name: ${PROJECT_NAME}
