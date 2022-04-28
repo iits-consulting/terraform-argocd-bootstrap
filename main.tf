@@ -50,6 +50,7 @@ resource "helm_release" "argocd" {
         PROJECT_SOURCE_REPO_URL   = var.argocd_project_source_repo_url
         PROJECT_BRANCH            = var.argocd_project_source_repo_branch
         GIT_ACCESS_TOKEN          = var.argocd_git_access_token
+        APPLICATION_VALUES        = yamlencode(var.argocd_application_values)
       }
     ))
   ]

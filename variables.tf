@@ -40,7 +40,7 @@ variable "registry_credentials_dockerconfig" {
   description = "Dockerconfig in kubernetes.io/dockerconfigjson format. See https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/"
   type        = string
   default     = ""
-  sensitive   = true
+  #sensitive   = true
 }
 
 resource "errorcheck_is_valid" "registry_credentials_dockerconfig_validation" {
@@ -66,13 +66,13 @@ variable "argocd_project_name" {
 variable "argocd_git_access_token_username" {
   description = "The Username of the Git User/Service account to be able to pull the git Code."
   type        = string
-  sensitive   = true
+  #sensitive   = true
 }
 
 variable "argocd_git_access_token" {
   description = "Secret Access Token to be able to pull the git Code."
   type        = string
-  sensitive   = true
+  #sensitive   = true
 }
 
 variable "argocd_project_source_repo_url" {
@@ -95,3 +95,14 @@ variable "argocd_project_source_path" {
   type        = string
 }
 
+
+variable "argocd_application_values" {
+  description = "Helm Application Values and Secret which are handed down to ArgoCD"
+  type        = any
+  #sensitive   = true
+  default     = {
+    global ={
+      stage="dev"
+    }
+  }
+}
