@@ -8,7 +8,7 @@ variable "custom_resource_definitions_enabled" {
 variable "custom_resource_definitions_version" {
   description = "Version of CRD collection chart. (default: 1.1.3)"
   type        = string
-  default     = "1.1.3"
+  default     = "1.3.0"
 }
 
 variable "custom_resource_definitions_namespace" {
@@ -27,7 +27,7 @@ variable "registry_credentials_enabled" {
 variable "registry_credentials_version" {
   description = "Version of Registry Credentials chart. (default: 1.0.6)"
   type        = string
-  default     = "1.0.6"
+  default     = "1.1.0"
 }
 
 variable "registry_credentials_namespace" {
@@ -40,7 +40,7 @@ variable "registry_credentials_dockerconfig" {
   description = "Dockerconfig in kubernetes.io/dockerconfigjson format. See https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/"
   type        = string
   default     = ""
-  #sensitive   = true
+  sensitive   = true
 }
 
 resource "errorcheck_is_valid" "registry_credentials_dockerconfig_validation" {
@@ -66,13 +66,13 @@ variable "argocd_project_name" {
 variable "argocd_git_access_token_username" {
   description = "The Username of the Git User/Service account to be able to pull the git Code."
   type        = string
-  #sensitive   = true
+  sensitive   = true
 }
 
 variable "argocd_git_access_token" {
   description = "Secret Access Token to be able to pull the git Code."
   type        = string
-  #sensitive   = true
+  sensitive   = true
 }
 
 variable "argocd_project_source_repo_url" {
@@ -99,10 +99,6 @@ variable "argocd_project_source_path" {
 variable "argocd_application_values" {
   description = "Helm Application Values and Secret which are handed down to ArgoCD"
   type        = any
-  #sensitive   = true
-  default     = {
-    global ={
-      stage="dev"
-    }
-  }
+  sensitive   = true
+  default = {}
 }

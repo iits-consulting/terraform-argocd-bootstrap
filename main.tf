@@ -28,6 +28,26 @@ resource "helm_release" "registry_credentials" {
   }
 }
 
+locals {
+  argocd_settings = {
+    logFormat = "json"
+    env = [{
+      name  = "TZ"
+      value = "Europe/Berlin"
+    }]
+  }
+  application_values = merge(var.argocd_application_values, {
+    global = merge({
+      projectName = var.argocd_project_name
+      source = {
+        appsBasePath   = "${var.argocd_project_source_path}/apps"
+        repoURL        = var.argocd_project_source_repo_url
+        targetRevision = var.argocd_project_source_repo_branch
+      }
+    }, lookup(var.argocd_application_values, "global", {}))
+  })
+}
+
 resource "helm_release" "argocd" {
   depends_on            = [helm_release.registry_credentials]
   name                  = "argocd"
@@ -40,18 +60,32 @@ resource "helm_release" "argocd" {
   render_subchart_notes = true
   dependency_update     = true
   wait_for_jobs         = true
-  values = [
-    sensitive(templatefile(
-      "${path.module}/argocd/values.yaml",
-      {
-        PROJECT_NAME              = var.argocd_project_name
-        GIT_ACCESS_TOKEN_USERNAME = var.argocd_git_access_token_username
-        PROJECT_SOURCE_PATH       = var.argocd_project_source_path
-        PROJECT_SOURCE_REPO_URL   = var.argocd_project_source_repo_url
-        PROJECT_BRANCH            = var.argocd_project_source_repo_branch
-        GIT_ACCESS_TOKEN          = var.argocd_git_access_token
-        APPLICATION_VALUES        = yamlencode(var.argocd_application_values)
+  values = [yamlencode({
+    applicationValues = yamlencode(local.application_values)
+    projects = {
+      infrastructure = {
+        name    = var.argocd_project_name
+        repoUrl = var.argocd_project_source_repo_url
+        path    = var.argocd_project_source_path
+        branch  = var.argocd_project_source_repo_branch
       }
-    ))
-  ]
+      gitToken = {
+        name     = var.argocd_git_access_token_username
+        password = var.argocd_git_access_token
+      }
+    }
+    argo-cd = {
+      controller = local.argocd_settings
+      repoServer = local.argocd_settings
+      dex        = local.argocd_settings
+      server = merge(local.argocd_settings, {
+        extraArgs = [
+          "--insecure",
+          "--rootpath=/argocd",
+          "--basehref=/argocd",
+        ]
+      })
+    }
+    }
+  )]
 }
