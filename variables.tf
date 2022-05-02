@@ -100,5 +100,5 @@ variable "argocd_application_values" {
   description = "Helm Application Values and Secret which are handed down to ArgoCD"
   type        = any
   sensitive   = true
-  default = {}
+  default     = {}
 }
