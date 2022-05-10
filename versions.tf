@@ -7,7 +7,7 @@ terraform {
       source = "hashicorp/kubernetes"
     }
     errorcheck = {
-      source = "rhythmictech/errorcheck"
+      source = "iits-consulting/errorcheck"
     }
   }
   experiments = [
