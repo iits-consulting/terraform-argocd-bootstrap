@@ -25,9 +25,9 @@ variable "registry_credentials_enabled" {
 }
 
 variable "registry_credentials_version" {
-  description = "Version of Registry Credentials chart. (default: 1.0.6)"
+  description = "Version of Registry Credentials chart. (default: 1.1.1)"
   type        = string
-  default     = "1.1.0"
+  default     = "1.1.1"
 }
 
 variable "registry_credentials_namespace" {
