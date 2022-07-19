@@ -6,9 +6,9 @@ variable "custom_resource_definitions_enabled" {
 }
 
 variable "custom_resource_definitions_version" {
-  description = "Version of CRD collection chart. (default: 1.1.3)"
+  description = "Version of CRD collection chart. (default: 1.4.0)"
   type        = string
-  default     = "1.3.0"
+  default     = "1.4.0"
 }
 
 variable "custom_resource_definitions_namespace" {
