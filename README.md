@@ -4,7 +4,7 @@ Usage Example
 
 ```hcl
 module "argocd" {
-  source  = "iits-consulting/bootstrap/argocd"
+  source  = "registry.terraform.io/iits-consulting/bootstrap/argocd"
   version = "X.X.X"
   
   ### Common CRD collection Configuration, see https://github.com/iits-consulting/crds-chart
