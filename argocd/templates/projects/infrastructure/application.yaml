@@ -16,6 +16,7 @@ spec:
       allowEmpty: true
     syncOptions:
       - CreateNamespace=true
+      - RespectIgnoreDifferences=true
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ .Release.Namespace }}
