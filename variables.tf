@@ -102,3 +102,9 @@ variable "argocd_application_values" {
   sensitive   = true
   default     = {}
 }
+
+variable "argocd_install_crds" {
+  description = "If ArgoCD CRDs should be installed"
+  type = bool
+  default = false
+}

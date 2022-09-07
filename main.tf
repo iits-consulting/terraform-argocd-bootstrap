@@ -75,6 +75,12 @@ resource "helm_release" "argocd" {
       }
     }
     argo-cd = {
+      notifications = {
+        enabled = false
+      }
+      crds = {
+        install = false
+      }
       controller = local.argocd_settings
       repoServer = local.argocd_settings
       dex        = local.argocd_settings
