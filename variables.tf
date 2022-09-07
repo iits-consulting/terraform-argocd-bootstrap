@@ -105,6 +105,6 @@ variable "argocd_application_values" {
 
 variable "argocd_install_crds" {
   description = "If ArgoCD CRDs should be installed"
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
