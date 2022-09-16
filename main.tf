@@ -81,6 +81,9 @@ resource "helm_release" "argocd" {
       crds = {
         install = false
       }
+      applicationSet = {
+        enabled = false
+      }
       controller = local.argocd_settings
       repoServer = local.argocd_settings
       dex        = local.argocd_settings
