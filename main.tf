@@ -73,6 +73,7 @@ resource "helm_release" "argocd" {
         name     = var.argocd_git_access_token_username
         password = var.argocd_git_access_token
       }
+      repoPrivateKeyBase64Encoded = var.argocd_git_access_private_key_base64Encoded
     }
     argo-cd = {
       notifications = {

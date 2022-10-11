@@ -13,5 +13,11 @@ data:
   url: {{ $project.repoUrl | b64enc }}
   name: {{ printf $project.name | b64enc }}
   type: {{ printf "git" | b64enc }}
+  {{- if ne .Values.projects.gitToken.password  "" }}
   password: {{ printf .Values.projects.gitToken.password | b64enc }}
   username: {{ printf .Values.projects.gitToken.name | b64enc }}
+  {{else}}
+  {{- if ne .Values.projects.repoPrivateKeyBase64Encoded "" }}
+  sshPrivateKey: {{ printf .Values.projects.repoPrivateKeyBase64Encoded }}
+  {{- end }}
+  {{- end }}
