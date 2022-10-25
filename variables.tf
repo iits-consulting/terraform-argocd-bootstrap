@@ -79,7 +79,7 @@ variable "argocd_git_access_private_key_base64Encoded" {
   description = "SSH Private Key to be able to pull the git Code. Default = \"\" which means it is disabled"
   type        = string
   sensitive   = true
-  default = ""
+  default     = ""
 }
 
 variable "argocd_project_source_repo_url" {
