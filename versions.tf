@@ -10,7 +10,4 @@ terraform {
       source = "iits-consulting/errorcheck"
     }
   }
-  experiments = [
-    module_variable_optional_attrs,
-  ]
 }
