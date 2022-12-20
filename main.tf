@@ -34,7 +34,12 @@ locals {
     env = [{
       name  = "TZ"
       value = "Europe/Berlin"
-    }]
+    },
+    {
+      name  = "ARGOCD_GPG_ENABLED"
+      value = "false"
+    },
+    ]
   }
   application_values = merge(var.argocd_application_values, {
     global = merge({
