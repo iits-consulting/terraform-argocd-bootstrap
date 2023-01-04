@@ -16,6 +16,9 @@ spec:
       allowEmpty: true
     syncOptions:
       - CreateNamespace=true
+      {{- if $project.serverSideApply}}
+      - ServerSideApply=true
+      {{- end}}
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ .Release.Namespace }}

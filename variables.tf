@@ -111,3 +111,9 @@ variable "argocd_install_crds" {
   type        = bool
   default     = false
 }
+
+variable "argocd_enable_server_side_apply" {
+  description = "If k8s Server Side Apply should be enabled for this ArgoCD project."
+  type        = bool
+  default     = false
+}

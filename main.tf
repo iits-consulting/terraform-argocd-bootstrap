@@ -34,11 +34,11 @@ locals {
     env = [{
       name  = "TZ"
       value = "Europe/Berlin"
-    },
-    {
-      name  = "ARGOCD_GPG_ENABLED"
-      value = "false"
-    },
+      },
+      {
+        name  = "ARGOCD_GPG_ENABLED"
+        value = "false"
+      },
     ]
   }
   application_values = merge(var.argocd_application_values, {
@@ -69,10 +69,11 @@ resource "helm_release" "argocd" {
     applicationValues = yamlencode(local.application_values)
     projects = {
       infrastructure = {
-        name    = var.argocd_project_name
-        repoUrl = var.argocd_project_source_repo_url
-        path    = var.argocd_project_source_path
-        branch  = var.argocd_project_source_repo_branch
+        name            = var.argocd_project_name
+        repoUrl         = var.argocd_project_source_repo_url
+        path            = var.argocd_project_source_path
+        branch          = var.argocd_project_source_repo_branch
+        serverSideApply = var.argocd_enable_server_side_apply
       }
       gitToken = {
         name     = var.argocd_git_access_token_username
