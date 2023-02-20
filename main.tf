@@ -1,33 +1,3 @@
-resource "helm_release" "custom_resource_definitions" {
-  count                 = var.custom_resource_definitions_enabled ? 1 : 0
-  name                  = "crds"
-  repository            = "https://iits-consulting.github.io/crds-chart"
-  chart                 = "crds"
-  version               = var.custom_resource_definitions_version
-  namespace             = var.custom_resource_definitions_namespace
-  create_namespace      = true
-  render_subchart_notes = true
-  dependency_update     = true
-}
-
-resource "helm_release" "registry_credentials" {
-  count                 = var.registry_credentials_enabled ? 1 : 0
-  depends_on            = [helm_release.custom_resource_definitions]
-  name                  = "registry-creds"
-  repository            = "https://iits-consulting.github.io/registry-creds-chart"
-  chart                 = "registry-creds"
-  version               = var.registry_credentials_version
-  namespace             = var.registry_credentials_namespace
-  create_namespace      = true
-  atomic                = true
-  render_subchart_notes = true
-  dependency_update     = true
-  set_sensitive {
-    name  = "defaultClusterPullSecret.dockerConfigJsonBase64Encoded"
-    value = var.registry_credentials_dockerconfig
-  }
-}
-
 locals {
   argocd_settings = {
     logFormat = "json"
@@ -54,7 +24,6 @@ locals {
 }
 
 resource "helm_release" "argocd" {
-  depends_on            = [helm_release.registry_credentials]
   name                  = "argocd"
   chart                 = "${path.module}/argocd"
   namespace             = var.argocd_namespace
